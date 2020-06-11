@@ -2,12 +2,23 @@
 
 var MAX_COUNT = 8;
 var TITLE = ['Заголовок1', 'Заголовок2', 'Заголовок3', 'Заголовок4', 'Заголовок5', 'Заголовок6', 'Заголовок7', 'Заголовок8'];
+var PRICE = ['100', '200', '500', '100500'];
 var TYPE = ['palace', 'flat', 'house', 'bungalo'];
+var ROOMS_MIN = 1;
+var ROOMS_MAX = 4;
+var GUESTS_MIN = 1;
+var GUESTS_MAX = 10;
 var CHECKIN = ['12:00', '13:00', '14:00'];
 var CHECKOUT = ['12:00', '13:00', '14:00'];
 var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 var DESCRIPTION = ['Описание1', 'Описание2', 'Описание3', 'Описание4', 'Описание5', 'Описание6', 'Описание7', 'Описание8'];
 var PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
+var LOCATION_X = 0;
+var LOCATION_X_MAX = 1100;
+var LOCATION_Y = 130;
+var LOCATION_Y_MAX = 630;
+var PIN_WIDTH = 50;
+var PIN_HEIGHT = 70;
 
 var map = document.querySelector('.map');
 map.classList.remove('map--faded');
@@ -25,19 +36,21 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-// ф-я создания моков
-var getMoks = function (i) {
-  var description = {
+// ф-я создания мока
+var getMok = function (i) {
+  var locationX = getRandomInt(LOCATION_X, LOCATION_X_MAX);
+  var locationY = getRandomInt(LOCATION_Y, LOCATION_Y_MAX);
+  var ad = {
     'author': {
       'avatar': 'img/avatars/user0' + (i + 1) + '.png',
     },
     'offer': {
       'title': getRandom(TITLE),
-      'address': getRandomInt(0, 600) + ', ' + getRandomInt(0, 350),
-      'price': getRandomInt(1000, 5000),
+      'address': locationX + ',' + locationY,
+      'price': getRandom(PRICE),
       'type': getRandom(TYPE),
-      'rooms': getRandomInt(1, 4),
-      'guests': getRandomInt(1, 10),
+      'rooms': getRandomInt(ROOMS_MIN, ROOMS_MAX),
+      'guests': getRandomInt(GUESTS_MIN, GUESTS_MAX),
       'checkin': getRandom(CHECKIN),
       'checkout': getRandom(CHECKOUT),
       'features': getRandom(FEATURES),
@@ -45,19 +58,19 @@ var getMoks = function (i) {
       'photos': getRandom(PHOTOS)
     },
     'location': {
-      'x': getRandomInt(0, 1200),
-      'y': getRandomInt(130, 630)
+      'x': locationX,
+      'y': locationY
     }
   };
-  return description;
+  return ad;
 };
 
 // ф-я создания пинов
 var renderPinElement = function (pin) {
   var pinElement = similarPinsTemplate.cloneNode(true);
 
-  pinElement.style.left = pin.location.x + 'px';
-  pinElement.style.top = pin.location.y + 'px';
+  pinElement.style.left = pin.location.x - PIN_WIDTH + 'px';
+  pinElement.style.top = pin.location.y - PIN_HEIGHT + 'px';
   pinElement.querySelector('img').src = pin.author.avatar;
   pinElement.querySelector('img').alt = pin.offer.title;
 
@@ -67,19 +80,17 @@ var renderPinElement = function (pin) {
 var numberOfPins = function (number) {
   var pins = [];
   for (var i = 0; i < number; i++) {
-    pins.push(getMoks());
+    pins.push(getMok(i));
   }
   return pins;
 };
 
 var createDom = function (pins) {
   pins = numberOfPins(MAX_COUNT);
-  var arr = [];
   var fragment = document.createDocumentFragment();
 
   for (var i = 0; i < pins.length; i++) {
-    arr.push(getMoks(i));
-    fragment.appendChild(renderPinElement(arr[i]));
+    fragment.appendChild(renderPinElement(pins[i]));
   }
   similarListElement.appendChild(fragment);
 };
