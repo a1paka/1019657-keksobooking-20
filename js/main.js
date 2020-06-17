@@ -4,12 +4,12 @@ var MAX_COUNT = 8;
 var TITLES = ['Пафосное место', 'Уютный уголок', 'Неуютный уголок', 'Заголовок4', 'Заголовок5', 'Заголовок6', 'Заголовок7', 'Заголовок8'];
 var PRICES = ['100', '200', '500', '100500'];
 var TYPES = ['palace', 'flat', 'house', 'bungalo'];
-var POPUP_TYPES = {
+/* var POPUP_TYPES = {
   'flat': 'Квартира',
   'bungalo': 'Бунгало',
   'house': 'Дом',
   'palace': 'Дворец',
-};
+}; */
 var ROOMS_MIN = 1;
 var ROOMS_MAX = 4;
 var GUESTS_MIN = 1;
@@ -25,10 +25,10 @@ var LOCATION_Y = 130;
 var LOCATION_Y_MAX = 630;
 var PIN_WIDTH = 50;
 var PIN_HEIGHT = 70;
+var MIN_TITLE_LENGTH = 30;
+var MAX_TITLE_LENGTH = 100;
 
 var map = document.querySelector('.map');
-map.classList.remove('map--faded');
-
 var similarListElement = document.querySelector('.map__pins');
 var similarPinsTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
 
@@ -117,10 +117,10 @@ var createDom = function (pins) {
 };
 createDom();
 
-var similarCardsTemplate = document.querySelector('#card').content.querySelector('.map__card');
-
 // ф-я создания карточки
-var renderCard = function (ad) {
+/* var similarCardsTemplate = document.querySelector('#card').content.querySelector('.map__card');
+
+ var renderCard = function (ad) {
   var cardElement = similarCardsTemplate.cloneNode(true);
 
   cardElement.querySelector('.popup__title').textContent = ad.offer.title;
@@ -169,5 +169,93 @@ var createCardDom = function (obj) {
     map.insertBefore(renderCard(obj[0]), cardNextElement);
   }
 };
-createCardDom();
+createCardDom(); */
 
+// 4-2
+var pinMain = document.querySelector('.map__pin--main');
+var adForm = document.querySelector('.ad-form');
+var fieldsets = document.querySelectorAll('fieldset, select');
+var address = adForm.querySelector('#address');
+
+// активация
+var formDisabled = function (i) {
+  for (i = 0; i < fieldsets.length; i++) {
+    fieldsets[i].setAttribute('disabled', 'disabled');
+  }
+};
+formDisabled(fieldsets);
+
+var formActive = function (i) {
+  for (i = 0; i < fieldsets.length; i++) {
+    fieldsets[i].removeAttribute('disabled');
+  }
+};
+
+var activePage = function () {
+  map.classList.remove('map--faded');
+  adForm.classList.remove('ad-form--disabled');
+  formActive(fieldsets);
+};
+
+pinMain.addEventListener('mousedown', function (evt) {
+  if (evt.button === 0) {
+    activePage();
+  }
+});
+
+pinMain.addEventListener('keydown', function (evt) {
+  if (evt.key === 'Enter') {
+    activePage();
+  }
+});
+
+// ф-я заполнения поля адреса
+var pinCoordinate = function () {
+  var coordinateX = pinMain.offsetLeft + pinMain.offsetWidth / 2;
+  var coordinateY = pinMain.offsetTop + pinMain.offsetHeight / 2;
+  var coordinates = coordinateX + ', ' + coordinateY;
+  address.value = coordinates;
+};
+pinCoordinate(address.value);
+
+// валидация заголовка
+var titleInput = document.querySelector('#title');
+titleInput.addEventListener('invalid', function () {
+  if (titleInput.validity.valueMissing) {
+    titleInput.setCustomValidity('Обязательное поле');
+  } else {
+    titleInput.setCustomValidity('');
+  }
+});
+
+titleInput.addEventListener('input', function () {
+  var valueLength = titleInput.value.length;
+
+  if (valueLength < MIN_TITLE_LENGTH) {
+    titleInput.setCustomValidity('Ещё ' + (MIN_TITLE_LENGTH - valueLength) + ' симв.');
+  } else if (valueLength > MAX_TITLE_LENGTH) {
+    titleInput.setCustomValidity('Удалите лишние ' + (valueLength - MAX_TITLE_LENGTH) + ' симв.');
+  } else {
+    titleInput.setCustomValidity('');
+  }
+});
+
+// валидация гостей и комнат
+var rooms = document.querySelector('#room_number');
+var guests = document.querySelector('#capacity');
+
+var getRoomsAndGuests = function () {
+  if (rooms.value === '1' && guests.value !== '1') {
+    guests.setCustomValidity('Комната для 1 гостя');
+  } else if (rooms.value === '2' && guests.value !== '1' && guests.value !== '2') {
+    guests.setCustomValidity('Комната для одного или двух гостей');
+  } else if (rooms.value === '3' && guests.value === '0') {
+    guests.setCustomValidity('Комната для одного, двух, или трех гостей');
+  } else if (rooms.value === '100' && guests.value !== '0') {
+    guests.setCustomValidity('Комната не для гостей');
+  } else {
+    guests.setCustomValidity('');
+  }
+};
+rooms.addEventListener('change', getRoomsAndGuests);
+guests.addEventListener('change', getRoomsAndGuests);
