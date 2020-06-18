@@ -27,6 +27,9 @@ var PIN_WIDTH = 50;
 var PIN_HEIGHT = 70;
 var MIN_TITLE_LENGTH = 30;
 var MAX_TITLE_LENGTH = 100;
+var NUMBER_OF_ROOMS = '100';
+var NOT_FOR_GUESTS = '0';
+var MOUSE_LEFT_BUTTON = 0;
 
 var map = document.querySelector('.map');
 var similarListElement = document.querySelector('.map__pins');
@@ -106,7 +109,7 @@ var numberOfPins = function (number) {
   return pins;
 };
 
-var createDom = function (pins) {
+var createDomPins = function (pins) {
   pins = numberOfPins(MAX_COUNT);
   var fragment = document.createDocumentFragment();
 
@@ -115,7 +118,6 @@ var createDom = function (pins) {
   }
   similarListElement.appendChild(fragment);
 };
-createDom();
 
 // ф-я создания карточки
 /* var similarCardsTemplate = document.querySelector('#card').content.querySelector('.map__card');
@@ -176,17 +178,18 @@ var pinMain = document.querySelector('.map__pin--main');
 var adForm = document.querySelector('.ad-form');
 var fieldsets = document.querySelectorAll('fieldset, select');
 var address = adForm.querySelector('#address');
+var pins = [];
 
 // активация
-var formDisabled = function (i) {
-  for (i = 0; i < fieldsets.length; i++) {
+var formDisabled = function () {
+  for (var i = 0; i < fieldsets.length; i++) {
     fieldsets[i].setAttribute('disabled', 'disabled');
   }
 };
 formDisabled(fieldsets);
 
-var formActive = function (i) {
-  for (i = 0; i < fieldsets.length; i++) {
+var formActive = function () {
+  for (var i = 0; i < fieldsets.length; i++) {
     fieldsets[i].removeAttribute('disabled');
   }
 };
@@ -198,8 +201,11 @@ var activePage = function () {
 };
 
 pinMain.addEventListener('mousedown', function (evt) {
-  if (evt.button === 0) {
+  if (evt.button === MOUSE_LEFT_BUTTON) {
     activePage();
+  }
+  if (pins.length === 0) {
+    pins = createDomPins();
   }
 });
 
@@ -207,14 +213,18 @@ pinMain.addEventListener('keydown', function (evt) {
   if (evt.key === 'Enter') {
     activePage();
   }
+  if (pins.length === 0) {
+    pins = createDomPins();
+  }
 });
 
 // ф-я заполнения поля адреса
 var pinCoordinate = function () {
-  var coordinateX = pinMain.offsetLeft + pinMain.offsetWidth / 2;
-  var coordinateY = pinMain.offsetTop + pinMain.offsetHeight / 2;
+  var coordinateX = Math.round(pinMain.offsetLeft + pinMain.offsetWidth / 2);
+  var coordinateY = Math.round(pinMain.offsetTop + pinMain.offsetHeight / 2);
   var coordinates = coordinateX + ', ' + coordinateY;
   address.value = coordinates;
+  address.setAttribute('readonly', 'readonly');
 };
 pinCoordinate(address.value);
 
@@ -245,14 +255,12 @@ var rooms = document.querySelector('#room_number');
 var guests = document.querySelector('#capacity');
 
 var getRoomsAndGuests = function () {
-  if (rooms.value === '1' && guests.value !== '1') {
-    guests.setCustomValidity('Комната для 1 гостя');
-  } else if (rooms.value === '2' && guests.value !== '1' && guests.value !== '2') {
-    guests.setCustomValidity('Комната для одного или двух гостей');
-  } else if (rooms.value === '3' && guests.value === '0') {
-    guests.setCustomValidity('Комната для одного, двух, или трех гостей');
-  } else if (rooms.value === '100' && guests.value !== '0') {
+  if (rooms.value < guests.value) {
+    guests.setCustomValidity('Выберите больше гостей или уменьшите количество комнат');
+  } else if (rooms.value === NUMBER_OF_ROOMS && guests.value !== NOT_FOR_GUESTS) {
     guests.setCustomValidity('Комната не для гостей');
+  } else if (rooms.value !== NUMBER_OF_ROOMS && guests.value === NOT_FOR_GUESTS) {
+    guests.setCustomValidity('Выберите большее количество комнат');
   } else {
     guests.setCustomValidity('');
   }
