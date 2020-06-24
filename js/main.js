@@ -1,7 +1,7 @@
 'use strict';
 
 var MAX_COUNT = 8;
-var TITLES = ['Пафосное место', 'Уютный уголок', 'Неуютный уголок', 'Заголовок4', 'Заголовок5', 'Заголовок6', 'Заголовок7', 'Заголовок8'];
+var TITLES = ['Пафосное место', 'Уютный уголок', 'Неуютный уголок', 'Домик на дереве', 'Центр мегаполиса', 'Клубный район', 'Заголовок7', 'Заголовок8'];
 var PRICES = ['100', '200', '500', '100500'];
 var TYPES = ['palace', 'flat', 'house', 'bungalo'];
 var POPUP_TYPES = {
@@ -17,7 +17,7 @@ var GUESTS_MAX = 10;
 var CHECKIN = ['12:00', '13:00', '14:00'];
 var CHECKOUT = ['12:00', '13:00', '14:00'];
 var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
-var DESCRIPTIONS = ['Домик у моря (а не это вот все)', 'Описание2', 'Описание3', 'Описание4', 'Описание5', 'Описание6', 'Описание7', 'Описание8'];
+var DESCRIPTIONS = ['Домик у моря (а не это вот все)', 'На 16 этаже, красивые закаты!', 'Описание3', 'Описание4', 'Описание5', 'Описание6', 'Описание7', 'Описание8'];
 var PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
 var LOCATION_X = 0;
 var LOCATION_X_MAX = 1100;
@@ -113,50 +113,28 @@ var getMok = function (i) {
   return ad;
 };
 
-// ф-я создания пинов
+// ф-я создания пинов - активация пина
 var renderPinElement = function (ad) {
   var pinElement = similarPinsTemplate.cloneNode(true);
+  pins = numberOfPins(MAX_COUNT);
 
   pinElement.style.left = ad.location.x - PIN_WIDTH + 'px';
   pinElement.style.top = ad.location.y - PIN_HEIGHT + 'px';
   pinElement.querySelector('img').src = ad.author.avatar;
   pinElement.querySelector('img').alt = ad.offer.title;
-
   pinElement.addEventListener('click', function (evt) {
     evt.preventDefault();
-    closeCard();
+    closeCard(ad);
     pinElement.classList.add('map__pin--active');
-    map.insertBefore(createCardDom(ad));
+    map.insertBefore(renderCard(ad), cardNextElement);
+
+    for (var i = 0; i < ad.length; i++) {
+      mapPins.appendChild(createCardDom(pins[i]));
+    }
+    document.addEventListener('keydown', onCardEcsPress);
   });
 
   return pinElement;
-};
-
-// открытие.закрытие карточки
-var closeCard = function () {
-  var mapCard = document.querySelector('.map__card');
-  var mapPinActive = document.querySelector('.map__pin--active');
-
-  if (mapCard) {
-    mapCard.remove();
-    mapPinActive.classList.remove('map__pin--active');
-  }
-  document.removeEventListener('keydown', onCardEcsPress);
-  document.removeEventListener('click', onCardMouseClick);
-};
-
-var onCardEcsPress = function (evt) {
-  if (evt.key === 'Escape') {
-    evt.preventDefault();
-    closeCard();
-  }
-};
-
-var onCardMouseClick = function (evt) {
-  if (evt.key === MOUSE_LEFT_BUTTON) {
-    evt.preventDefault();
-    closeCard();
-  }
 };
 
 var numberOfPins = function (number) {
@@ -217,8 +195,10 @@ var renderCard = function (ad) {
 
   cardElement.querySelector('.popup__avatar').src = ad.author.avatar;
 
-  var popupClose = cardElement.querySelector('.popup__close');
-  popupClose.addEventListener('click', onCardMouseClick);
+  var closeButton = cardElement.querySelector('.popup__close');
+  closeButton.addEventListener('click', function () {
+    cardElement.remove();
+  });
 
   return cardElement;
 };
@@ -230,13 +210,34 @@ var createCardDom = function (obj) {
   }
 };
 
+// закрытие карточки
+var closeCard = function () {
+  var mapCard = document.querySelector('.map__card');
+  var mapPinActive = document.querySelector('.map__pin--active');
+
+  if (mapCard) {
+    mapCard.remove();
+  }
+  if (mapPinActive) {
+    mapPinActive.classList.remove('map__pin--active');
+  }
+  document.removeEventListener('keydown', onCardEcsPress);
+};
+
+var onCardEcsPress = function (evt) {
+  if (evt.key === 'Escape') {
+    evt.preventDefault();
+    closeCard();
+  }
+};
+
+// активация
 var pinMain = document.querySelector('.map__pin--main');
 var adForm = document.querySelector('.ad-form');
 var fieldsets = document.querySelectorAll('fieldset, select');
 var address = adForm.querySelector('input[name="address"]');
 var pins = [];
 
-// активация
 var formDisabled = function () {
   for (var i = 0; i < fieldsets.length; i++) {
     fieldsets[i].setAttribute('disabled', 'disabled');
