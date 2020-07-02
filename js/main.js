@@ -78,33 +78,19 @@
     window.backend.load(successHandler, errorHandler);
   };
 
-  pinMain.addEventListener('mousedown', function (evt) {
-    if (evt.button === MOUSE_LEFT_BUTTON) {
+  var onActionActivate = function (evt) {
+    if (evt.button === MOUSE_LEFT_BUTTON || evt.code === 'Enter') {
       activePage();
+      pinMain.removeEventListener('mousedown', onActionActivate);
+      pinMain.removeEventListener('keydown', onActionActivate);
     }
     if (pins.length === 0) {
       pins = window.pin.createDomPins();
     }
-  });
-
-  pinMain.addEventListener('keydown', function (evt) {
-    if (evt.key === 'Enter') {
-      activePage();
-    }
-    if (pins.length === 0) {
-      pins = window.pin.createDomPins();
-    }
-  });
-
-  // ф-я заполнения поля адреса
-  var pinCoordinate = function () {
-    var coordinateX = Math.round(pinMain.offsetLeft + pinMain.offsetWidth / 2);
-    var coordinateY = Math.round(pinMain.offsetTop + pinMain.offsetHeight / 2);
-    var coordinates = coordinateX + ', ' + coordinateY;
-    address.value = coordinates;
-    address.setAttribute('readonly', 'readonly');
   };
-  pinCoordinate(address.value);
+  pinMain.addEventListener('mousedown', onActionActivate);
+  pinMain.addEventListener('keydown', onActionActivate);
+
 
   var successHandler = function (pinsArr) {
     pins = pinsArr;
@@ -127,5 +113,15 @@
     node.textContent = errorMessage;
     document.body.insertAdjacentElement('afterbegin', node);
   };
+
+  // ф-я заполнения поля адреса
+  var pinCoordinate = function () {
+    var coordinateX = Math.round(pinMain.offsetLeft + pinMain.offsetWidth / 2);
+    var coordinateY = Math.round(pinMain.offsetTop + pinMain.offsetHeight / 2);
+    var coordinates = coordinateX + ', ' + coordinateY;
+    address.value = coordinates;
+    address.setAttribute('readonly', 'readonly');
+  };
+  pinCoordinate(address.value);
 
 })();

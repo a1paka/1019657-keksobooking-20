@@ -68,6 +68,7 @@
   window.pin = {
     PINS_COUNT: PINS_COUNT,
     renderPinElement: renderPinElement,
-    createDomPins: createDomPins
+    createDomPins: createDomPins,
+    mapPins: mapPins,
   };
 })();
