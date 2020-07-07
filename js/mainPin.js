@@ -93,18 +93,20 @@
         y: moveEvt.clientY
       };
 
-      pinMain.style.top = (pinMain.offsetTop - shift.y) + 'px';
-      pinMain.style.left = (pinMain.offsetLeft - shift.x) + 'px';
+      pinMain.style.top = pinMain.offsetTop - shift.y + 'px';
+      pinMain.style.left = pinMain.offsetLeft - shift.x + 'px';
 
-      if (pinMain.offsetLeft < LOCATION_X_MIN) {
+      if (pinMain.offsetLeft < LOCATION_X_MIN - MAIN_PIN_WIDTH / 2) {
         pinMain.style.left = LOCATION_X_MIN - MAIN_PIN_WIDTH / 2 + 'px';
-      } else if (pinMain.offsetLeft > LOCATION_X_MAX) {
+      } else if (pinMain.offsetLeft > LOCATION_X_MAX - MAIN_PIN_WIDTH / 2) {
         pinMain.style.left = LOCATION_X_MAX - MAIN_PIN_WIDTH / 2 + 'px';
-      } else if (pinMain.offsetTop < LOCATION_Y_MIN) {
+      } else if (pinMain.offsetTop < LOCATION_Y_MIN - MAIN_PIN_HEIGHT) {
         pinMain.style.top = LOCATION_Y_MIN - MAIN_PIN_HEIGHT + 'px';
-      } else if (pinMain.offsetTop > LOCATION_Y_MAX) {
+      } else if (pinMain.offsetTop > LOCATION_Y_MAX - MAIN_PIN_HEIGHT) {
         pinMain.style.top = LOCATION_Y_MAX - MAIN_PIN_HEIGHT + 'px';
       }
+
+      pinCoordinate(address.value);
     };
 
     var onMouseUp = function (upEvt) {
@@ -112,7 +114,6 @@
 
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);
-      pinCoordinate(address.value);
     };
 
     document.addEventListener('mousemove', onMouseMove);
