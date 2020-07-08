@@ -2,8 +2,9 @@
 (function () {
 
   var MOUSE_LEFT_BUTTON = 0;
-  var MAIN_PIN_WIDTH = 65;
-  var MAIN_PIN_HEIGHT = 65;
+  var MAIN_PIN_WIDTH = 66;
+  var MAIN_PIN_HEIGHT = 66;
+  var MAIN_PIN_POINTER = 22;
   var LOCATION_Y_MIN = 130;
   var LOCATION_Y_MAX = 630;
   var LOCATION_X_MIN = 0;
@@ -98,12 +99,12 @@
 
       if (pinMain.offsetLeft < LOCATION_X_MIN - MAIN_PIN_WIDTH / 2) {
         pinMain.style.left = LOCATION_X_MIN - MAIN_PIN_WIDTH / 2 + 'px';
-      } else if (pinMain.offsetLeft > LOCATION_X_MAX - MAIN_PIN_WIDTH / 2) {
+      } else if (pinMain.offsetLeft > LOCATION_X_MAX - MAIN_PIN_WIDTH / 2 + MAIN_PIN_POINTER) {
         pinMain.style.left = LOCATION_X_MAX - MAIN_PIN_WIDTH / 2 + 'px';
-      } else if (pinMain.offsetTop < LOCATION_Y_MIN - MAIN_PIN_HEIGHT) {
-        pinMain.style.top = LOCATION_Y_MIN - MAIN_PIN_HEIGHT + 'px';
-      } else if (pinMain.offsetTop > LOCATION_Y_MAX - MAIN_PIN_HEIGHT) {
-        pinMain.style.top = LOCATION_Y_MAX - MAIN_PIN_HEIGHT + 'px';
+      } else if (pinMain.offsetTop < LOCATION_Y_MIN - MAIN_PIN_HEIGHT / 2) {
+        pinMain.style.top = LOCATION_Y_MIN - MAIN_PIN_HEIGHT / 2 + 'px';
+      } else if (pinMain.offsetTop > LOCATION_Y_MAX - MAIN_PIN_HEIGHT + MAIN_PIN_POINTER) {
+        pinMain.style.top = LOCATION_Y_MAX - MAIN_PIN_HEIGHT / 2 + 'px';
       }
 
       pinCoordinate(address.value);
@@ -128,5 +129,6 @@
     address.value = coordinates;
     address.setAttribute('readonly', 'readonly');
   };
+  pinCoordinate(address.value);
 
 })();
