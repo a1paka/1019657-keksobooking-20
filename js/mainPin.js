@@ -99,9 +99,11 @@
 
       if (pinMain.offsetLeft < LOCATION_X_MIN - MAIN_PIN_WIDTH / 2) {
         pinMain.style.left = LOCATION_X_MIN - MAIN_PIN_WIDTH / 2 + 'px';
-      } else if (pinMain.offsetLeft > LOCATION_X_MAX - MAIN_PIN_WIDTH / 2 + MAIN_PIN_POINTER) {
+      } else if (pinMain.offsetLeft > LOCATION_X_MAX - MAIN_PIN_WIDTH / 2) {
         pinMain.style.left = LOCATION_X_MAX - MAIN_PIN_WIDTH / 2 + 'px';
-      } else if (pinMain.offsetTop < LOCATION_Y_MIN - MAIN_PIN_HEIGHT / 2) {
+      }
+
+      if (pinMain.offsetTop < LOCATION_Y_MIN - MAIN_PIN_HEIGHT / 2) {
         pinMain.style.top = LOCATION_Y_MIN - MAIN_PIN_HEIGHT / 2 + 'px';
       } else if (pinMain.offsetTop > LOCATION_Y_MAX - MAIN_PIN_HEIGHT + MAIN_PIN_POINTER) {
         pinMain.style.top = LOCATION_Y_MAX - MAIN_PIN_HEIGHT / 2 + 'px';
