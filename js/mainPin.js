@@ -103,13 +103,13 @@
         pinMain.style.left = LOCATION_X_MAX - MAIN_PIN_WIDTH / 2 + 'px';
       }
 
-      if (pinMain.offsetTop < LOCATION_Y_MIN - MAIN_PIN_HEIGHT / 2) {
-        pinMain.style.top = LOCATION_Y_MIN - MAIN_PIN_HEIGHT / 2 + 'px';
-      } else if (pinMain.offsetTop > LOCATION_Y_MAX - MAIN_PIN_HEIGHT + MAIN_PIN_POINTER) {
-        pinMain.style.top = LOCATION_Y_MAX - MAIN_PIN_HEIGHT / 2 + 'px';
+      if (pinMain.offsetTop < LOCATION_Y_MIN - MAIN_PIN_HEIGHT - MAIN_PIN_POINTER / 2) {
+        pinMain.style.top = LOCATION_Y_MIN - MAIN_PIN_HEIGHT - MAIN_PIN_POINTER / 2 + 'px';
+      } else if (pinMain.offsetTop > LOCATION_Y_MAX - MAIN_PIN_HEIGHT - MAIN_PIN_POINTER / 2) {
+        pinMain.style.top = LOCATION_Y_MAX - MAIN_PIN_HEIGHT - MAIN_PIN_POINTER / 2 + 'px';
       }
 
-      pinCoordinate(address.value);
+      address.value = Math.round(pinMain.offsetLeft + MAIN_PIN_WIDTH / 2) + ', ' + Math.round(pinMain.offsetTop + MAIN_PIN_HEIGHT + MAIN_PIN_POINTER / 2);
     };
 
     var onMouseUp = function (upEvt) {
@@ -127,10 +127,9 @@
   var pinCoordinate = function () {
     var coordinateX = Math.round(pinMain.offsetLeft + MAIN_PIN_WIDTH / 2);
     var coordinateY = Math.round(pinMain.offsetTop + MAIN_PIN_HEIGHT / 2);
-    var coordinates = coordinateX + ', ' + coordinateY;
-    address.value = coordinates;
+    address.value = coordinateX + ', ' + coordinateY;
     address.setAttribute('readonly', 'readonly');
   };
   pinCoordinate(address.value);
-
 })();
+
