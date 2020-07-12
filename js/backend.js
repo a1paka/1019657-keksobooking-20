@@ -1,6 +1,7 @@
 'use strict';
 (function () {
   var LOAD = 'https://javascript.pages.academy/keksobooking/data';
+  var SAVE = 'https://javascript.pages.academy/keksobooking';
   var TIMEOUT_IN_MS = 10000;
 
   var StatusCode = {
@@ -30,11 +31,17 @@
     xhr.send(data);
   };
 
+  var save = function (data, onLoad, onError) {
+    makeRequest('POST', SAVE, onLoad, onError, data);
+  };
+
   var load = function (onLoad, onError) {
     makeRequest('GET', LOAD, onLoad, onError);
   };
 
   window.backend = {
-    load: load
+    load: load,
+    save: save,
+    makeRequest: makeRequest
   };
 })();
