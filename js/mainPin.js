@@ -15,6 +15,7 @@
   var adForm = document.querySelector('.ad-form');
   var fieldsets = document.querySelectorAll('fieldset, select');
   var address = adForm.querySelector('input[name="address"]');
+  var resetButton = document.querySelector('.ad-form__reset');
   var pins = [];
 
   var formDisabled = function () {
@@ -35,6 +36,13 @@
     adForm.classList.remove('ad-form--disabled');
     formActive(fieldsets);
     window.backend.load(successHandler, window.messages.createErrorMessage);
+    resetButton.addEventListener('click', resetPage);
+    pinCoordinate(address.value);
+
+    pinMain.removeEventListener('mousedown', onActionActivate);
+    pinMain.removeEventListener('keydown', onActionActivate);
+    adForm.addEventListener('submit', window.messages.submitHandler);
+    resetButton.addEventListener('click', resetPage);
   };
 
   var blockedPage = function () {
@@ -42,9 +50,16 @@
     adForm.classList.add('ad-form--disabled');
     window.messages.removePins();
     adForm.reset();
+    pinCoordinate(address.value);
+
     pinMain.addEventListener('mousedown', onActionActivate);
     pinMain.addEventListener('keydown', onActionActivate);
-    pinCoordinate(address.value);
+    adForm.removeEventListener('submit', window.messages.submitHandler);
+    resetButton.removeEventListener('click', resetPage);
+  };
+
+  var resetPage = function () {
+    window.mainPin.blockedPage();
   };
 
   var onActionActivate = function (evt) {
@@ -135,6 +150,7 @@
     MOUSE_LEFT_BUTTON: MOUSE_LEFT_BUTTON,
     blockedPage: blockedPage,
     activePage: activePage,
-    adForm: adForm
+    adForm: adForm,
+    pinCoordinate: pinCoordinate
   };
 })();

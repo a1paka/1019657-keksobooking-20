@@ -13,8 +13,6 @@
   };
 
   var closeSuccessMessage = function () {
-    window.mainPin.activePage();
-
     if (successTemplate) {
       successTemplate.remove();
     }
@@ -84,6 +82,9 @@
 
   window.messages = {
     createErrorMessage: createSuccessMessage,
-    removePins: removePins
+    removePins: removePins,
+    onEcsPress: onEcsPress,
+    onButtonClick: onButtonClick,
+    submitHandler: submitHandler
   };
 })();
