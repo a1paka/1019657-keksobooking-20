@@ -83,6 +83,7 @@
   window.card = {
     createCardDom: createCardDom,
     renderCard: renderCard,
-    closeCard: closeCard
+    closeCard: closeCard,
+    similarCardsTemplate: similarCardsTemplate
   };
 })();
