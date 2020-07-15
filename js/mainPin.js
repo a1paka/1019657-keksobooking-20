@@ -16,6 +16,7 @@
   var fieldsets = document.querySelectorAll('fieldset, select');
   var address = adForm.querySelector('input[name="address"]');
   var resetButton = document.querySelector('.ad-form__reset');
+  var mapFilters = document.querySelector('.map__filters');
   var pins = [];
 
   var formDisabled = function () {
@@ -43,6 +44,7 @@
     pinMain.removeEventListener('keydown', onActionActivate);
     adForm.addEventListener('submit', window.messages.submitHandler);
     resetButton.addEventListener('click', resetPage);
+    mapFilters.addEventListener('change', onMapFiltersChange);
   };
 
   var blockedPage = function () {
@@ -56,6 +58,7 @@
     pinMain.addEventListener('keydown', onActionActivate);
     adForm.removeEventListener('submit', window.messages.submitHandler);
     resetButton.removeEventListener('click', resetPage);
+    mapFilters.removeEventListener('change', onMapFiltersChange);
   };
 
   var resetPage = function () {
@@ -69,21 +72,19 @@
       pinMain.removeEventListener('keydown', onActionActivate);
     }
     if (pins.length === 0) {
-      pins = window.pin.createDomPins();
+      pins = window.pin.render();
     }
   };
   pinMain.addEventListener('mousedown', onActionActivate);
   pinMain.addEventListener('keydown', onActionActivate);
 
+  var successHandler = function (data) {
+    pins = data;
+    window.pin.render(data);
+  };
 
-  var successHandler = function (pinsArr) {
-    pins = pinsArr;
-    var fragment = document.createDocumentFragment();
-
-    for (var i = 0; i < window.pin.PINS_COUNT; i++) {
-      fragment.appendChild(window.pin.renderPinElement(pinsArr[i]));
-    }
-    document.querySelector('.map__pins').appendChild(fragment);
+  var onMapFiltersChange = function () {
+    window.filter.filterHousingType(pins);
   };
 
   // перемещение
