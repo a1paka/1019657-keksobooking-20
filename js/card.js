@@ -32,6 +32,8 @@
           cardLiElement.classList.add('popup__feature--' + ad.offer.features[i]);
           cardElement.querySelector('.popup__features').appendChild(cardLiElement);
         }
+      } if (ad.offer.features.length === 0) {
+        cardElement.querySelector('.popup__features').remove();
       }
     };
     renderFeatures();
@@ -46,6 +48,8 @@
           cardImgElement.src = ad.offer.photos[i];
           cardElement.querySelector('.popup__photos').appendChild(cardImgElement);
         }
+      } if (ad.offer.photos.length === 0) {
+        cardElement.querySelector('.popup__photos').remove();
       }
     };
     renderPhotos();

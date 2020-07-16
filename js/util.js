@@ -1,6 +1,8 @@
 'use strict';
 
 (function () {
+
+  var DEBOUNCE_INTERVAL = 300;
   // ф-я получения случайного элемента из массива
   function getRandom(randomArr) {
     return randomArr[Math.floor(Math.random() * randomArr.length)];
@@ -31,6 +33,20 @@
       evt.preventDefault();
       window.card.closeCard();
     }
+  };
+
+  window.debounce = function (cb) {
+    var lastTimeout = null;
+
+    return function () {
+      var parameters = arguments;
+      if (lastTimeout) {
+        window.clearTimeout(lastTimeout);
+      }
+      lastTimeout = window.setTimeout(function () {
+        cb.apply(null, parameters);
+      }, DEBOUNCE_INTERVAL);
+    };
   };
 
   window.util = {
