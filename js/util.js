@@ -2,7 +2,7 @@
 
 (function () {
 
-  var DEBOUNCE_INTERVAL = 300;
+  var DEBOUNCE_INTERVAL = 500;
   // ф-я получения случайного элемента из массива
   function getRandom(randomArr) {
     return randomArr[Math.floor(Math.random() * randomArr.length)];
