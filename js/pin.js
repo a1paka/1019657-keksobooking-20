@@ -3,7 +3,7 @@
 (function () {
   var PIN_WIDTH = 50;
   var PIN_HEIGHT = 70;
-  var PINS_COUNT = 8;
+  var PINS_COUNT = 5;
 
   var similarPinsTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
   var map = document.querySelector('.map');
@@ -12,7 +12,6 @@
 
   var renderPinElement = function (ad, pins) {
 
-    // pins = numberOfPins(PINS_COUNT);
     var pinElement = similarPinsTemplate.cloneNode(true);
 
     pinElement.style.left = ad.location.x - PIN_WIDTH + 'px';
@@ -47,20 +46,12 @@
     document.removeEventListener('keydown', window.util.onCardEcsPress);
   };
 
-  /* var numberOfPins = function (number) {
-    var pins = [];
-    for (var i = 0; i < number; i++) {
-      pins.push(window.main.getMok(i));
-    }
-    return pins;
-  }; */
-
-  var createDomPins = function (pins) {
-    pins = [];
+  var render = function (data) {
+    var length = data.length > PINS_COUNT ? PINS_COUNT : data.length;
     var fragment = document.createDocumentFragment();
 
-    for (var i = 0; i < pins.length; i++) {
-      fragment.appendChild(renderPinElement(pins[i]));
+    for (var i = 0; i < length; i++) {
+      fragment.appendChild(renderPinElement(data[i]));
     }
     mapPins.appendChild(fragment);
   };
@@ -68,7 +59,7 @@
   window.pin = {
     PINS_COUNT: PINS_COUNT,
     renderPinElement: renderPinElement,
-    createDomPins: createDomPins,
     mapPins: mapPins,
+    render: render
   };
 })();
