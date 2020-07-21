@@ -102,22 +102,4 @@
   timeOut.addEventListener('change', function () {
     timeIn.value = timeOut.value;
   });
-
-  // загрузка изображения
-  var avatar = adForm.querySelector('#avatar');
-  var image = adForm.querySelector('#images');
-
-  var getAvatarChange = function () {
-    if (avatar.files[0].type !== 'image/jpeg') {
-      avatar.setCustomValidity('Загрузить можно только изображения');
-    }
-  };
-  avatar.addEventListener('change', getAvatarChange);
-
-  var getImageChange = function () {
-    if (image.files[0].type !== 'image/jpeg') {
-      image.setCustomValidity('Загрузить можно только изображения');
-    }
-  };
-  image.addEventListener('change', getImageChange);
 })();

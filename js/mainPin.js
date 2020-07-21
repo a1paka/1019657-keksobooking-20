@@ -47,6 +47,7 @@
     adForm.classList.add('ad-form--disabled');
     window.messages.removePins();
     adForm.reset();
+    window.photos.removeImage();
     window.pinMove.pinCoordinate(address.value);
 
     pinMain.addEventListener('mousedown', onActionActivate);
@@ -57,7 +58,7 @@
   };
 
   var resetPage = function () {
-    window.mainPin.blockedPage();
+    blockedPage();
   };
 
   var onActionActivate = function (evt, data) {
