@@ -4,8 +4,8 @@
   var MAX_TITLE_LENGTH = 100;
   var NUMBER_OF_ROOMS = '100';
   var NOT_FOR_GUESTS = '0';
-  var MAX_PRICE = 1000000;
-  var TYPES_PRICES = {
+
+  var housingTypesPrice = {
     'bungalo': {
       type: 'Бунгало',
       minPrice: 0
@@ -21,6 +21,12 @@
     'palace': {
       type: 'Дворец',
       minPrice: 10000
+    }
+  };
+
+  var disableElements = function (arr) {
+    for (var i = 0; i < arr.length; i++) {
+      arr[i].setAttribute('disabled', 'disabled');
     }
   };
 
@@ -76,21 +82,22 @@
     } else {
       price.setCustomValidity('');
     }
-  });
 
-  var getPricesAndTypes = function () {
-    if (price.value > MAX_PRICE) {
+    if (price.validity.rangeOverFlow) {
       price.setCustomValidity('Цена за ночь не может быть больше 1 000 000');
     } else {
       price.setCustomValidity('');
     }
-    var types = TYPES_PRICES[type.value];
-    price.placeholder = types.minPrice;
+  });
+
+  var getPricesAndTypes = function () {
+    var types = housingTypesPrice[type.value];
     price.min = types.minPrice;
-    price.setAttribute('type', 'number');
+    price.placeholder = types.minPrice;
   };
   price.addEventListener('change', getPricesAndTypes);
   type.addEventListener('change', getPricesAndTypes);
+  getPricesAndTypes();
 
   // время заезда и выезда
   var timeIn = adForm.querySelector('select[name="timein"]');
@@ -102,4 +109,8 @@
   timeOut.addEventListener('change', function () {
     timeIn.value = timeOut.value;
   });
+
+  window.form = {
+    disableElements: disableElements
+  };
 })();

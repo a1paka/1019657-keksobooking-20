@@ -70,7 +70,10 @@
   pinCoordinate(window.mainPin.address.value);
 
   window.pinMove = {
-    pinCoordinate: pinCoordinate
+    pinCoordinate: pinCoordinate,
+    MAIN_PIN_WIDTH: MAIN_PIN_WIDTH,
+    MAIN_PIN_HEIGHT: MAIN_PIN_HEIGHT,
+    MAIN_PIN_POINTER: MAIN_PIN_POINTER
   };
 
 })();

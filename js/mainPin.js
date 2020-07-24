@@ -5,6 +5,11 @@
   var MIN_PRICE = 10000;
   var MAX_PRICE = 50000;
 
+  var pinMainPosition = {
+    LEFT: '570px',
+    TOP: '375px'
+  };
+
   var map = document.querySelector('.map');
   var pinMain = document.querySelector('.map__pin--main');
   var adForm = document.querySelector('.ad-form');
@@ -14,12 +19,12 @@
   var mapFilters = document.querySelector('.map__filters');
   var pins = [];
 
-  var formDisabled = function () {
+  var formDisable = function () {
     for (var i = 0; i < fieldsets.length; i++) {
       fieldsets[i].setAttribute('disabled', 'disabled');
     }
   };
-  formDisabled(fieldsets);
+  formDisable(fieldsets);
 
   var formActive = function () {
     for (var i = 0; i < fieldsets.length; i++) {
@@ -32,14 +37,13 @@
     adForm.classList.remove('ad-form--disabled');
     formActive(fieldsets);
     window.backend.load(successHandler, window.messages.createErrorMessage);
-    resetButton.addEventListener('click', resetPage);
-    window.pinMove.pinCoordinate(address.value);
 
     pinMain.removeEventListener('mousedown', onActionActivate);
     pinMain.removeEventListener('keydown', onActionActivate);
-    adForm.addEventListener('submit', window.messages.submitHandler);
-    resetButton.addEventListener('click', resetPage);
-    mapFilters.addEventListener('change', onMapFiltersChange);
+    adForm.addEventListener('submit', window.messages.onSubmit);
+
+    address.value = Math.round(pinMain.offsetLeft + window.pinMove.MAIN_PIN_WIDTH / 2) + ', '
+    + Math.round(pinMain.offsetTop + window.pinMove.MAIN_PIN_HEIGHT + window.pinMove.MAIN_PIN_POINTER / 2);
   };
 
   var blockedPage = function () {
@@ -47,19 +51,24 @@
     adForm.classList.add('ad-form--disabled');
     window.messages.removePins();
     adForm.reset();
+    mapFilters.reset();
+    formDisable(fieldsets);
+    window.card.closeCard();
     window.photos.removeImage();
-    window.pinMove.pinCoordinate(address.value);
 
     pinMain.addEventListener('mousedown', onActionActivate);
     pinMain.addEventListener('keydown', onActionActivate);
-    adForm.removeEventListener('submit', window.messages.submitHandler);
-    resetButton.removeEventListener('click', resetPage);
-    mapFilters.removeEventListener('change', onMapFiltersChange);
+    adForm.removeEventListener('submit', window.messages.onSubmit);
+
+    pinMain.style.left = pinMainPosition.LEFT;
+    pinMain.style.top = pinMainPosition.TOP;
+    window.pinMove.pinCoordinate(address.value);
   };
 
-  var resetPage = function () {
+  resetButton.addEventListener('click', function (evt) {
+    evt.preventDefault();
     blockedPage();
-  };
+  });
 
   var onActionActivate = function (evt, data) {
     data = [];
@@ -148,8 +157,9 @@
   var onMapFiltersChange = function () {
     window.card.closeCard();
     window.messages.removePins();
-    window.debounce(window.pin.render(getFilteredData(pins)));
+    window.pin.render(getFilteredData(pins));
   };
+  mapFilters.addEventListener('change', onMapFiltersChange);
 
   window.mainPin = {
     MOUSE_LEFT_BUTTON: MOUSE_LEFT_BUTTON,

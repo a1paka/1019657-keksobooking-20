@@ -74,17 +74,17 @@
     });
   };
 
-  var submitHandler = function (evt) {
+  var onSubmit = function (evt) {
     evt.preventDefault();
     window.backend.save(new FormData(window.mainPin.adForm), createSuccessMessage, createErrorMessage);
   };
-  window.mainPin.adForm.addEventListener('submit', submitHandler);
+  window.mainPin.adForm.addEventListener('submit', onSubmit);
 
   window.messages = {
     createErrorMessage: createSuccessMessage,
     removePins: removePins,
     onEcsPress: onEcsPress,
     onButtonClick: onButtonClick,
-    submitHandler: submitHandler
+    onSubmit: onSubmit
   };
 })();
