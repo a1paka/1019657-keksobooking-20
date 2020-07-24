@@ -65,7 +65,7 @@
   };
 
   var createCardDom = function (obj) {
-    obj = window.util.numberOfPins(MAX_COUNT);
+    obj = window.utils.numberOfPins(MAX_COUNT);
     for (var i = 0; i < obj.length; i++) {
       map.insertBefore(renderCard(obj[0]), cardNextElement);
     }
@@ -81,7 +81,7 @@
     if (mapPinActive) {
       mapPinActive.classList.remove('map__pin--active');
     }
-    document.removeEventListener('keydown', window.util.onCardEcsPress);
+    document.removeEventListener('keydown', window.utils.onCardEscPress);
   };
 
   window.card = {

@@ -27,7 +27,7 @@
       for (var i = 0; i < ad.length; i++) {
         mapPins.appendChild(window.card.createCardDom(pins[i]));
       }
-      document.addEventListener('keydown', window.util.onCardEcsPress);
+      document.addEventListener('keydown', window.utils.onCardEcsPress);
     });
 
     return pinElement;
@@ -43,10 +43,10 @@
     if (mapPinActive) {
       mapPinActive.classList.remove('map__pin--active');
     }
-    document.removeEventListener('keydown', window.util.onCardEcsPress);
+    document.removeEventListener('keydown', window.utils.onCardEcsPress);
   };
 
-  var render = function (data) {
+  var render = window.utils.debounce(function (data) {
     var length = data.length > PINS_COUNT ? PINS_COUNT : data.length;
     var fragment = document.createDocumentFragment();
 
@@ -54,7 +54,7 @@
       fragment.appendChild(renderPinElement(data[i]));
     }
     mapPins.appendChild(fragment);
-  };
+  });
 
   window.pin = {
     PINS_COUNT: PINS_COUNT,
