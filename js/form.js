@@ -8,25 +8,19 @@
   var housingTypesPrice = {
     'bungalo': {
       type: 'Бунгало',
-      minPrice: 0
+      minPrice: '0'
     },
     'flat': {
       type: 'Квартира',
-      minPrice: 1000
+      minPrice: '1000'
     },
     'house': {
       type: 'Дом',
-      minPrice: 5000
+      minPrice: '5000'
     },
     'palace': {
       type: 'Дворец',
-      minPrice: 10000
-    }
-  };
-
-  var disableElements = function (arr) {
-    for (var i = 0; i < arr.length; i++) {
-      arr[i].setAttribute('disabled', 'disabled');
+      minPrice: '10000'
     }
   };
 
@@ -111,6 +105,6 @@
   });
 
   window.form = {
-    disableElements: disableElements
+    getPricesAndTypes: getPricesAndTypes
   };
 })();

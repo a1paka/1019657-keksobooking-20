@@ -4,6 +4,7 @@
   var MOUSE_LEFT_BUTTON = 0;
   var MIN_PRICE = 10000;
   var MAX_PRICE = 50000;
+  var ENTER_KEY = 'Enter';
 
   var pinMainPosition = {
     LEFT: '570px',
@@ -36,7 +37,7 @@
     map.classList.remove('map--faded');
     adForm.classList.remove('ad-form--disabled');
     formActive(fieldsets);
-    window.backend.load(successHandler, window.messages.createErrorMessage);
+    window.backend.load(successHandler, window.backend.renderErrorMessage);
 
     pinMain.removeEventListener('mousedown', onActionActivate);
     pinMain.removeEventListener('keydown', onActionActivate);
@@ -55,6 +56,7 @@
     formDisable(fieldsets);
     window.card.closeCard();
     window.photos.removeImage();
+    window.form.getPricesAndTypes();
 
     pinMain.addEventListener('mousedown', onActionActivate);
     pinMain.addEventListener('keydown', onActionActivate);
@@ -72,7 +74,7 @@
 
   var onActionActivate = function (evt, data) {
     data = [];
-    if (evt.button === MOUSE_LEFT_BUTTON || evt.code === 'Enter') {
+    if (evt.button === MOUSE_LEFT_BUTTON || evt.code === ENTER_KEY) {
       activePage();
       pinMain.removeEventListener('mousedown', onActionActivate);
       pinMain.removeEventListener('keydown', onActionActivate);

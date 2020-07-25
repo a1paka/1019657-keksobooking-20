@@ -10,8 +10,8 @@
   var MAX_COUNT = 8;
 
   var similarCardsTemplate = document.querySelector('#card').content.querySelector('.map__card');
-  var map = document.querySelector('.map');
-  var cardNextElement = map.querySelector('.map__filters-container');
+  var mapElement = document.querySelector('.map');
+  var cardNextElement = mapElement.querySelector('.map__filters-container');
 
   var renderCard = function (ad) {
     var cardElement = similarCardsTemplate.cloneNode(true);
@@ -56,8 +56,8 @@
 
     cardElement.querySelector('.popup__avatar').src = ad.author.avatar;
 
-    var closeButton = cardElement.querySelector('.popup__close');
-    closeButton.addEventListener('click', function () {
+    var closeButtonElement = cardElement.querySelector('.popup__close');
+    closeButtonElement.addEventListener('click', function () {
       cardElement.remove();
     });
 
@@ -67,7 +67,7 @@
   var createCardDom = function (obj) {
     obj = window.utils.numberOfPins(MAX_COUNT);
     for (var i = 0; i < obj.length; i++) {
-      map.insertBefore(renderCard(obj[0]), cardNextElement);
+      mapElement.insertBefore(renderCard(obj[0]), cardNextElement);
     }
   };
 

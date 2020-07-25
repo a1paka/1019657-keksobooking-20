@@ -3,9 +3,10 @@
 (function () {
 
   var DEBOUNCE_INTERVAL = 500;
+  var ESCAPE_KEY = 'Escape';
 
   var onCardEscPress = function (evt) {
-    if (evt.key === 'Escape') {
+    if (evt.key === ESCAPE_KEY) {
       evt.preventDefault();
       window.card.closeCard();
     }

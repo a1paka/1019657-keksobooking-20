@@ -1,5 +1,7 @@
 'use strict';
 (function () {
+  var ESCAPE_KEY = 'Escape';
+
   var successTemplate = document.querySelector('#success').content.querySelector('.success');
   var errorTemplate = document.querySelector('#error').content.querySelector('.error');
   var errorButton = errorTemplate.querySelector('.error__button');
@@ -28,7 +30,7 @@
   };
 
   var onEcsPress = function (evt) {
-    if (evt.key === 'Escape') {
+    if (evt.key === ESCAPE_KEY) {
       evt.preventDefault();
       closeSuccessMessage();
     }
@@ -60,7 +62,7 @@
   };
 
   var onEcsPressError = function (evt) {
-    if (evt.key === 'Escape') {
+    if (evt.key === ESCAPE_KEY) {
       evt.preventDefault();
       closeErrorMessage();
     }
