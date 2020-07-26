@@ -1249,3 +1249,10 @@ fieldset {
 .hidden {
   display: none;
 }
+
+.error-form,
+.ad-form input:focus:invalid,
+.ad-form select:focus:invalid {
+  -webkit-box-shadow: 0 0 2px 2px red;
+  box-shadow: 0 0 2px 2px red;
+}

@@ -5,6 +5,8 @@
   var successTemplate = document.querySelector('#success').content.querySelector('.success');
   var errorTemplate = document.querySelector('#error').content.querySelector('.error');
   var errorButton = errorTemplate.querySelector('.error__button');
+  var adForm = document.querySelector('.ad-form');
+  var formInputs = adForm.querySelectorAll('input, select');
 
   // сообщение об успехе
   var createSuccessMessage = function () {
@@ -78,6 +80,7 @@
 
   var onSubmit = function (evt) {
     evt.preventDefault();
+    window.form.checkFormFields(formInputs);
     window.backend.save(new FormData(window.mainPin.adForm), createSuccessMessage, createErrorMessage);
   };
   window.mainPin.adForm.addEventListener('submit', onSubmit);

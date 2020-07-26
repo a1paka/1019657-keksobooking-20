@@ -15,6 +15,7 @@
   var pinMain = document.querySelector('.map__pin--main');
   var adForm = document.querySelector('.ad-form');
   var fieldsets = document.querySelectorAll('fieldset, select');
+  var formInputs = adForm.querySelectorAll('input, select');
   var address = adForm.querySelector('input[name="address"]');
   var resetButton = document.querySelector('.ad-form__reset');
   var mapFilters = document.querySelector('.map__filters');
@@ -65,6 +66,7 @@
     pinMain.style.left = pinMainPosition.LEFT;
     pinMain.style.top = pinMainPosition.TOP;
     window.pinMove.pinCoordinate(address.value);
+    window.form.removeErrorInput(formInputs);
   };
 
   resetButton.addEventListener('click', function (evt) {

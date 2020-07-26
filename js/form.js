@@ -4,27 +4,33 @@
   var MAX_TITLE_LENGTH = 100;
   var NUMBER_OF_ROOMS = '100';
   var NOT_FOR_GUESTS = '0';
+  var BUNGALO_PRICE = 0;
+  var FLAT_PRICE = 1000;
+  var HOUSE_PRICE = 5000;
+  var PALACE_PRICE = 10000;
 
   var housingTypesPrice = {
     'bungalo': {
       type: 'Бунгало',
-      minPrice: '0'
+      minPrice: BUNGALO_PRICE
     },
     'flat': {
       type: 'Квартира',
-      minPrice: '1000'
+      minPrice: FLAT_PRICE
     },
     'house': {
       type: 'Дом',
-      minPrice: '5000'
+      minPrice: HOUSE_PRICE
     },
     'palace': {
       type: 'Дворец',
-      minPrice: '10000'
+      minPrice: PALACE_PRICE
     }
   };
 
   var adForm = document.querySelector('.ad-form');
+  var formInputs = adForm.querySelectorAll('input, select');
+  var adFormSubmit = adForm.querySelector('.ad-form__submit');
   // валидация заголовка
   var titleInput = adForm.querySelector('input[name="title"]');
   titleInput.addEventListener('invalid', function () {
@@ -70,7 +76,8 @@
   var price = adForm.querySelector('input[name="price"]');
   var type = adForm.querySelector('select[name="type"]');
 
-  price.addEventListener('invalid', function () {
+  price.addEventListener('invalid', function (evt) {
+    evt.preventDefault();
     if (titleInput.validity.valueMissing) {
       price.setCustomValidity('Обязательное поле');
     } else {
@@ -104,7 +111,32 @@
     timeIn.value = timeOut.value;
   });
 
+  // проверка валидности полей
+  var checkFormFields = function (inputs) {
+    inputs.forEach(function (input) {
+      if (!input.validity.valid) {
+        input.classList.add('error-form');
+        return;
+      }
+
+      input.classList.remove('error-form');
+    });
+  };
+
+  adFormSubmit.addEventListener('click', function () {
+    checkFormFields(formInputs);
+  });
+
+  var removeErrorInput = function (inputs) {
+    inputs.forEach(function (input) {
+      if (input.classList.contains('error-form')) {
+        input.classList.remove('error-form');
+      }
+    });
+  };
+
   window.form = {
-    getPricesAndTypes: getPricesAndTypes
+    getPricesAndTypes: getPricesAndTypes,
+    removeErrorInput: removeErrorInput
   };
 })();
