@@ -137,6 +137,7 @@
 
   window.form = {
     getPricesAndTypes: getPricesAndTypes,
-    removeErrorInput: removeErrorInput
+    removeErrorInput: removeErrorInput,
+    checkFormFields: checkFormFields
   };
 })();
